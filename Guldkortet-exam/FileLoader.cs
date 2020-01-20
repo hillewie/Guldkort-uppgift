@@ -19,7 +19,8 @@ namespace Guldkortet_exam
 			return (File.Exists(path))? System.IO.File.ReadAllText(path)
 					.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)
 					.Select(x => x.Split(new string[] { "###" }, StringSplitOptions.None))
-					.Select(x => x.Where(y => !string.IsNullOrEmpty(y))) : new List<IEnumerable<string>>();
+					.Select(x => x.Where(y => !string.IsNullOrEmpty(y))) 
+					: new List<IEnumerable<string>>();
 		}
 		public Kort LoadCardType(string type, string value)
 		{
