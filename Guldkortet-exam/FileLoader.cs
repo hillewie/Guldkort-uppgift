@@ -17,7 +17,7 @@ namespace Guldkortet_exam
 		private IEnumerable<IEnumerable<string>> LoadFile(string path)
             //vad gör denna?
 		{
-
+            //hahdha
            
 
             //här jag använder link för att loopa och formatera om lista med lite mindre kod heltenekelt
