@@ -16,67 +16,59 @@ namespace Guldkortet_exam
     {
         private readonly FileLoader kortLoader;
         private readonly TcpClient client;
-
-        public Form1()
+		private readonly Server server;
+		
+		public Form1()
         {
             InitializeComponent();
             kortLoader = new FileLoader();
             client = new TcpClient();
-
-           
-        }
+			server = new Server(kortLoader);
+			richTextBox1.DataBindings.Add("Text", server, "Log", true, DataSourceUpdateMode.OnPropertyChanged);
+			textBox1.Text = "A2986708-K242872563";
+			button1.Enabled = false;
+			button3.Enabled = false;
+		}
 
         private void Form1_Load(object sender, EventArgs e)
         {
 
-        }
+			
+			
+		}
 
         private async void Button1_Click(object sender, EventArgs e)
         {
-            //try
-            //{
-            //    if (client.Connected)
-            //    {
-            //        NetworkStream tråden = client.GetStream();
-            //        foreach ()
-            //        {
-            //            byte[] bytesToSend = Encoding.Unicode.GetBytes(Kort.ToString()); //  Programmet kan skicka markerade böckers ToString till Centraldator med tostring
-            //            await tråden.WriteAsync(bytesToSend, 0, bytesToSend.Length); // meddelandar servern vad vi ska skicka och hur stort  
-            //        }
-            //    }
-            //}
-            //catch (Exception error)
-            //{
-            //    MessageBox.Show(error.Message);
-            //}
-        }
+			try
+			{
+				server.Stop();
+				button2.Enabled = true;
+				button1.Enabled = false;
+				button3.Enabled = false;
+			}
+			catch (Exception error)
+			{
+				MessageBox.Show(error.Message);
+			}
+		}
 
         private async  void Button2_Click(object sender, EventArgs e)
         {
             try
             {
-                if (!client.Connected)
-                {
-                    // Startar uppkoppling med servern och låser up button1, knappen blir grön
-                    await client.ConnectAsync("127.0.0.1", 12345);
-                    // byter färg och text
-                    this.button2.BackColor = Color.Green;
-                    this.button2.Text = "You are connected!";
+				if (!server.stop)
+				{
+					server.Log = "server is starting";
+					button2.Enabled = false;
+					button1.Enabled = true;
+					button3.Enabled = true;
+					await server.StartServer();
 
-                    button1.Enabled = true;
-                }
-                else
-                {
-                    // clienten är kopplad och kan avsluta uppkoppligen och låser button1, knappen byter färg till vit 
-                    client.Close();
-                    this.button2.BackColor = Color.White;
-                    this.button2.Text = "Connect to Server";
-                    button1.Enabled = false;
-                }
+				}
             }
             catch (Exception error)
             {
-                MessageBox.Show(error.Message);
+                
             }
         }
 
@@ -84,6 +76,40 @@ namespace Guldkortet_exam
         {
 
         }
-    }
+
+		private async void button3_Click(object sender, EventArgs e)
+		{
+			button3.Enabled = false;
+			var client = new TcpClient();
+			
+
+				await client.ConnectAsync(server.IPNumeber, server.Port);
+			using (NetworkStream networkStream = client.GetStream())
+			{
+				networkStream.ReadTimeout = 2000;
+
+				using (var writer = new StreamWriter(networkStream))
+				{
+					using (var reader = new StreamReader(networkStream, Encoding.Unicode))
+					{
+
+						byte[] bytes = Encoding.Unicode.GetBytes(textBox1.Text);
+						await networkStream.WriteAsync(bytes, 0, bytes.Length);
+
+						MessageBox.Show(await reader.ReadToEndAsync());
+					}
+				}
+			}
+			button3.Enabled = true;
+		}
+
+		private async void button4_Click(object sender, EventArgs e)
+		{
+			if (client.Connected)
+			{
+				
+			}
+		}
+	}
    
 }

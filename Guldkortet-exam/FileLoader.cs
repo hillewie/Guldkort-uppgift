@@ -10,7 +10,7 @@ namespace Guldkortet_exam
 {
 	public class FileLoader
 	{
-		//ändring 
+		//ändri
 		public List<Kort> kortLista = new List<Kort>();
 		public List<Kund> Kunder = new List<Kund>();
 
