@@ -103,13 +103,7 @@ namespace Guldkortet_exam
 			button3.Enabled = true;
 		}
 
-		private async void button4_Click(object sender, EventArgs e)
-		{
-			if (client.Connected)
-			{
-				
-			}
-		}
+		
 	}
    
 }
