@@ -75,12 +75,14 @@ namespace Guldkortet_exam
 					Log = $"Client message {Encoding.Unicode.GetString(msg)}";//the same networkstream reads the message sent by the client
 					var message = Encoding.Unicode.GetString(msg).Split('-').AsEnumerable();//now , we write the message as string
 					 
+                    // kund listan 
 					var kund = _fileLoader.Kunder.FirstOrDefault(x=> x.kundNummer == message.ElementAtOrDefault(0));
 
 					reponse.AppendLine((kund != null)?$"Kund med id {kund.kundNummer} hittad":"Kunden fanns inte!");
 					if(kund != null)
 					{
-						var kort = _fileLoader.kortLista.FirstOrDefault(x => x.kortNummer == message.ElementAtOrDefault(1)?.Replace("\0",string.Empty));
+                        // kund listan 
+						var kort = _fileLoader.kortLista.FirstOrDefault(x => x.kortNummer == message.ElementAtOrDefault(1)?.Replace("\0",string.Empty));// här e helt
 						reponse.AppendLine((kort != null) ? $"Grattis du fick korttyp  {kort.kortTyp} " : "vi hittade inga kort!");
 					}
 				
@@ -91,7 +93,7 @@ namespace Guldkortet_exam
 					Log = reponse.ToString();
 					
 					reponse.Clear();
-					client.Close();
+					// detta kan vara problemet client.Close();
 				}
 				
 				

@@ -10,3 +10,15 @@ C:\Users\Wilirambo\Documents\Guldkort-uppgift\Guldkortet-exam\obj\Debug\Guldkort
 C:\Users\Wilirambo\Documents\Guldkort-uppgift\Guldkortet-exam\obj\Debug\Guldkortet-exam.pdb
 C:\Users\Wilirambo\Documents\Guldkort-uppgift\Guldkortet-exam\bin\Debug\bin\Debug\korlista.txt
 C:\Users\Wilirambo\Documents\Guldkort-uppgift\Guldkortet-exam\bin\Debug\bin\Debug\kundlista.txt
+C:\Users\Andre\Desktop\github-guldkortet\Guldkort-uppgift\Guldkortet-exam\bin\Debug\bin\Debug\korlista.txt
+C:\Users\Andre\Desktop\github-guldkortet\Guldkort-uppgift\Guldkortet-exam\bin\Debug\bin\Debug\kundlista.txt
+C:\Users\Andre\Desktop\github-guldkortet\Guldkort-uppgift\Guldkortet-exam\bin\Debug\Guldkortet-exam.exe.config
+C:\Users\Andre\Desktop\github-guldkortet\Guldkort-uppgift\Guldkortet-exam\bin\Debug\Guldkortet-exam.exe
+C:\Users\Andre\Desktop\github-guldkortet\Guldkort-uppgift\Guldkortet-exam\bin\Debug\Guldkortet-exam.pdb
+C:\Users\Andre\Desktop\github-guldkortet\Guldkort-uppgift\Guldkortet-exam\obj\Debug\Guldkortet-exam.csprojAssemblyReference.cache
+C:\Users\Andre\Desktop\github-guldkortet\Guldkort-uppgift\Guldkortet-exam\obj\Debug\Guldkortet_exam.Form1.resources
+C:\Users\Andre\Desktop\github-guldkortet\Guldkort-uppgift\Guldkortet-exam\obj\Debug\Guldkortet_exam.Properties.Resources.resources
+C:\Users\Andre\Desktop\github-guldkortet\Guldkort-uppgift\Guldkortet-exam\obj\Debug\Guldkortet-exam.csproj.GenerateResource.cache
+C:\Users\Andre\Desktop\github-guldkortet\Guldkort-uppgift\Guldkortet-exam\obj\Debug\Guldkortet-exam.csproj.CoreCompileInputs.cache
+C:\Users\Andre\Desktop\github-guldkortet\Guldkort-uppgift\Guldkortet-exam\obj\Debug\Guldkortet-exam.exe
+C:\Users\Andre\Desktop\github-guldkortet\Guldkort-uppgift\Guldkortet-exam\obj\Debug\Guldkortet-exam.pdb

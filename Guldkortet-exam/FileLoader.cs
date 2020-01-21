@@ -10,12 +10,17 @@ namespace Guldkortet_exam
 {
 	public class FileLoader
 	{
-		//ändri
-		public List<Kort> kortLista = new List<Kort>();
+        //https://www.youtube.com/watch?v=A7qwuFnyIpM  här är lite om interface
+        public List<Kort> kortLista = new List<Kort>();
 		public List<Kund> Kunder = new List<Kund>();
-
+        // ändring 
 		private IEnumerable<IEnumerable<string>> LoadFile(string path)
+            //vad gör denna?
 		{
+
+            var items = kortLista.FirstOrDefault(x => x.kortNummer == "hej");
+
+            //här jag använder link för att loopa och formatera om lista med lite mindre kod heltenekelt
 			return (File.Exists(path))? System.IO.File.ReadAllText(path)
 					.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)
 					.Select(x => x.Split(new string[] { "###" }, StringSplitOptions.None))

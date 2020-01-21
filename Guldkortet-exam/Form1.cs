@@ -15,7 +15,9 @@ namespace Guldkortet_exam
     public partial class Form1 : Form
     {
         private readonly FileLoader kortLoader;
+        // den här behövs ej  bara för test 
         private readonly TcpClient client;
+        // detta är din server
 		private readonly Server server;
 		
 		public Form1()
