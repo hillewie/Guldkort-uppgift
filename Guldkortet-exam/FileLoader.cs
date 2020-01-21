@@ -18,7 +18,7 @@ namespace Guldkortet_exam
             //vad gör denna?
 		{
 
-            var items = kortLista.FirstOrDefault(x => x.kortNummer == "hej");
+           
 
             //här jag använder link för att loopa och formatera om lista med lite mindre kod heltenekelt
 			return (File.Exists(path))? System.IO.File.ReadAllText(path)
