@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Guldkortet_exam
 {
+    //test
 	public class Server:INotifyPropertyChanged
 	{
 		public bool stop = false;
