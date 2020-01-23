@@ -70,7 +70,7 @@ namespace Guldkortet_exam
         }
         public void kortLoader()
         {
-
+            
         }
         public class Kort //klass för kortnummer
 		{
