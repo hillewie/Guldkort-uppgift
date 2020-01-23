@@ -10,75 +10,82 @@ namespace Guldkortet_exam
 {
 	public class FileLoader
 	{
-        //https://www.youtube.com/watch?v=A7qwuFnyIpM  här är lite om interface
-        public List<Kort> kortLista = new List<Kort>();
-		public List<Kund> Kunder = new List<Kund>();
-        // ändring 
-		private IEnumerable<IEnumerable<string>> LoadFile(string path)
-            //vad gör denna?
-		{
-            //hahdha
-           
+        public List<Kund> Kunder = new List<Kund>(); //lista för sammanställd kundnummer filen
+        public List<Kort> kortLista = new List<Kort>(); //lista för sammanställd kortnummer filen
+        public FileLoader()
+        {
+            List<string> kort = new List<string>();
+            if (File.Exists("kortlista.txt"))
+            {
+                StreamReader reader = new StreamReader("korlista.txt", Encoding.Default, false);
 
-            //här jag använder link för att loopa och formatera om lista med lite mindre kod heltenekelt
-			return (File.Exists(path))? System.IO.File.ReadAllText(path)
-					.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)
-					.Select(x => x.Split(new string[] { "###" }, StringSplitOptions.None))
-					.Select(x => x.Where(y => !string.IsNullOrEmpty(y))) 
-					: new List<IEnumerable<string>>();
-		}
-		public Kort LoadCardType(string type, string value)
-		{
-			switch (type)
-			{
-				case "Dunderkatt":
-					return new Dunderkatt(value, type);
-				case "Kristallhäst":
-					return new Kristallhäst(value, type);
-				case "Överpanda":
-					return new Överpanda(value, type);
-				case "Eldtomat":
-					return new Eldtomat(value, type);
-				default:
-					return new Kort(value, type);
-			}
-		}
-		public void ResetLists()
-		{
-			if (Kunder.Count > 0)
-				Kunder.Clear();
+                string item = "";
+                while ((item = reader.ReadLine()) != null)
+                {
+                    kort.Add(item);
+                }
+                foreach (string a in kort)
+                {
+                    string[] vektor = a.Split(new string[] { "###" }, StringSplitOptions.None); //splittar dem i olika kategorier i en vektorlista
+                    string kortNummer = vektor[0];
+                    string kortTyp = vektor[1];
 
-			if (kortLista.Count > 0)
-				kortLista.Clear();
-		}
-		public void LoadFiles()
-		{
-			foreach (var kund in LoadFile("kundlista.txt"))
-				Kunder.Add(new Kund(kund.ElementAtOrDefault(0), kund.ElementAtOrDefault(1), kund.ElementAtOrDefault(2)));
-			foreach (var kort in LoadFile("korlista.txt"))
-				kortLista.Add(LoadCardType(kort.ElementAtOrDefault(1), kort.ElementAtOrDefault(0)));
-		}
-		public FileLoader()
-		{
-			LoadFiles();
-		}
-		public class Kort
+                    Kort type;
+                    switch (kortTyp)
+                    {
+                        case "Dunderkatt":
+                            type = new Dunderkatt(kortNummer);
+                            break;
+                        case "Kristallhäst":
+                            type = new Kristallhäst(kortNummer);
+                            break;
+                        case "Överpanda":
+                            type = new Överpanda(kortNummer);
+                            break;
+                        default:
+                            type = new Eldtomat(kortNummer);
+                            break;
+                    }
+                    kortLista.Add(type); //lägger till varje kort i kortlistan
+                }
+            }
+            List<string> kund = new List<string>();
+            if (File.Exists("kundlista.txt"))
+            {
+                StreamReader reader = new StreamReader("kundlista.txt", Encoding.Default, false);
+
+                string item = "";
+                while ((item = reader.ReadLine()) != null)
+                {
+                    kund.Add(item);
+                }
+                foreach (string a in kund)
+                {
+                    string[] vektor = a.Split(new string[] { "###" }, StringSplitOptions.None); //splittar dem i olika kategorier i en vektorlista
+                    string KundNummer = vektor[0];
+                    string KundNamn = vektor[1];
+                    string KundStad = vektor[2];
+                }
+            }
+        }
+        public void kortLoader()
+        {
+
+        }
+        public class Kort //klass för kortnummer
 		{
 			public string kortNummer;
 			public string kortTyp;
 
 			public Kort(string inDatakortNummer, string inDatakortTyp)
 			{
-				kortNummer = inDatakortNummer;
-				kortTyp = inDatakortTyp;
+				this.kortNummer = inDatakortNummer;
+				this.kortTyp = inDatakortTyp;
 			}
 		}
-		class Dunderkatt : Kort
+		class Dunderkatt : Kort //underklasser för belöningskorten
 		{
-			public Dunderkatt(string inDatakortNummer, string inDatakortTyp) :
-			base(inDatakortNummer, inDatakortTyp)
-			{
-				inDatakortTyp = "Dunderkatt";
+			public Dunderkatt(string inDatakortNummer) : base(inDatakortNummer, "Dunderkatt"){
 			}
 			public override string ToString()
 			{
@@ -87,10 +94,7 @@ namespace Guldkortet_exam
 		}
 		class Kristallhäst : Kort
 		{
-			public Kristallhäst(string inDatakortNummer, string inDatakortTyp) :
-			base(inDatakortNummer, inDatakortTyp)
-			{
-				inDatakortTyp = "Kristallhäst";
+			public Kristallhäst(string inDatakortNummer) : base(inDatakortNummer, "Kristallhäst"){
 			}
 			public override string ToString()
 			{
@@ -99,10 +103,7 @@ namespace Guldkortet_exam
 		}
 		class Överpanda : Kort
 		{
-			public Överpanda(string inDatakortNummer, string inDatakortTyp) :
-			base(inDatakortNummer, inDatakortTyp)
-			{
-				inDatakortTyp = "Överpanda";
+			public Överpanda(string inDatakortNummer) : base(inDatakortNummer, "Överpanda"){
 			}
 			public override string ToString()
 			{
@@ -111,10 +112,7 @@ namespace Guldkortet_exam
 		}
 		class Eldtomat : Kort
 		{
-			public Eldtomat(string inDatakortNummer, string inDatakortTyp) :
-			base(inDatakortNummer, inDatakortTyp)
-			{
-				inDatakortTyp = "Eldtomat";
+			public Eldtomat(string inDatakortNummer) : base(inDatakortNummer, "Eldtomat"){
 			}
 			public override string ToString()
 			{

@@ -6,97 +6,64 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Guldkortet_exam
 {
-    //sasddasd
-	public class Server:INotifyPropertyChanged
+	public class Server
 	{
 		public bool stop = false;
-		string log ;
-		public string IPNumeber = "127.0.0.1";
-		public int Port = 12345;
-		public string Log { get {
-				
-				return log; }
-				set {
+		public string IPNumber = "127.0.0.1"; //ip-nummer
+		public int Port = 12345; //port
 
-				
-				log = value;
-				PropertyChangeEvent("Log");
-				
-			} }
 		private readonly FileLoader _fileLoader;
+        private readonly RichTextBox _richTextBox;
 		TcpListener server;
-
-		public event PropertyChangedEventHandler PropertyChanged;
-		protected virtual void PropertyChangeEvent(string property)
-		{
-			if(property != null)
-			{
-				PropertyChanged(this, new PropertyChangedEventArgs(property));
-			}
-
-		}
-
-		public Server(FileLoader fileLoader)
+        public Server(FileLoader fileLoader, RichTextBox richTextBox)
 		{
 			_fileLoader = fileLoader;
-			server = new TcpListener(IPAddress.Parse(IPNumeber), Port);
+            _richTextBox = richTextBox;
+			server = new TcpListener(IPAddress.Parse(IPNumber), Port);
 		}
-		public void Stop()
+		public void Stop() //stoppar uppkopplingen
 		{
 			server.Stop();
 			stop = true;
 		}
-		public async Task StartServer()
+		public async Task StartServer() //ansluter till serven
 		{
 			StringBuilder reponse = new StringBuilder();
 
-			
-			// we set our IP address as server's address, and we also set the port: 9999
-
-			server.Start();  // this will start the server
+			server.Start(); // startar servern
 			stop = false;
-			while (!stop)   //we wait for a connection
+			while (!stop)  //inväntar anslutning
 			{
-				TcpClient client = await server.AcceptTcpClientAsync();  //if a connection exists, the server will accept it
+				TcpClient client = await server.AcceptTcpClientAsync(); //finns det en anslutning kommer serven att acceptera anslutning
+                NetworkStream tråden = client.GetStream();              // skickar och mottar meddelanden
 
-				NetworkStream ns = client.GetStream();
-				
-				//networkstream is used to send/receive messages
-				
-				//sending the message
-
-				while (client.Connected && !stop)  //while the client is connected, we look for incoming messages
+				while (client.Connected && !stop)  //medans clinet är anslutning letar while efter inkommande meddelanden
 				{
-					byte[] msg = new byte[1024];     //the messages arrive as byte array
-					await ns.ReadAsync(msg, 0, msg.Length);
-					Log = $"Client message {Encoding.Unicode.GetString(msg)}";//the same networkstream reads the message sent by the client
-					var message = Encoding.Unicode.GetString(msg).Split('-').AsEnumerable();//now , we write the message as string
-					 
-                    // kund listan 
-					var kund = _fileLoader.Kunder.FirstOrDefault(x=> x.kundNummer == message.ElementAtOrDefault(0));
+					byte[] meddelande = new byte[1024]; //meddelandet mottas som byte array
+					await tråden.ReadAsync(meddelande, 0, meddelande.Length);
+                    _richTextBox.Text = $"Client message {Encoding.Unicode.GetString(meddelande)}";
 
-					reponse.AppendLine((kund != null)?$"Kund med id {kund.kundNummer} hittad":"Kunden fanns inte!");
+                    var message = Encoding.Unicode.GetString(meddelande).Split('-').AsEnumerable();// skriver ut meddelandet som en string
+					
+					var kund = _fileLoader.Kunder.FirstOrDefault(x=> x.kundNummer == message.ElementAtOrDefault(0)); // kund listan 
+
+                    reponse.AppendLine((kund != null)?$"Kund med id {kund.kundNummer} hittad":"Tyvärr hittade vi ingen kund med det kundnumret!"); //skriver ut meddelande vid hittat eller inte hittad kund
 					if(kund != null)
 					{
-                        // kund listan 
-						var kort = _fileLoader.kortLista.FirstOrDefault(x => x.kortNummer == message.ElementAtOrDefault(1)?.Replace("\0",string.Empty));// här e helt
-						reponse.AppendLine((kort != null) ? $"Grattis du fick korttyp  {kort.kortTyp} " : "vi hittade inga kort!");
-					}
-				
-					   //any message must be serialized (converted to byte array)
-					var bytemssg = Encoding.Unicode.GetBytes(reponse.ToString());  //conversion string => byte array
+						var kort = _fileLoader.kortLista.FirstOrDefault(x => x.kortNummer == message.ElementAtOrDefault(1)?.Replace("\0",string.Empty)); // kortlistan 
+                        reponse.AppendLine((kort != null) ? $"Grattis du vann kortet {kort.kortTyp} Du kan hämta din belöning i din närmsta spelbutik" : "Tyvärr hittade inget belöningskort med det kortnumret!"); //skriver ut meddelande vid hittat eller inte hittad kort
+                    }
+                    var bytemeddelande = Encoding.Unicode.GetBytes(reponse.ToString());  //alla meddelanden konverteras till byte array
 
-					await ns.WriteAsync(bytemssg, 0, bytemssg.Length);
-					Log = reponse.ToString();
-					
-					reponse.Clear();
-					// detta kan vara problemet client.Close();
+					await tråden.WriteAsync(bytemeddelande, 0, bytemeddelande.Length);
+
+                    _richTextBox.Text = reponse.ToString();
+                    reponse.Clear();
 				}
-				
-				
 			}
 		}
 	}
