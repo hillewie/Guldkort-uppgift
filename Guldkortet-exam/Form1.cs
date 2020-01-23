@@ -15,21 +15,19 @@ namespace Guldkortet_exam
     public partial class Form1 : Form
     {
         private readonly FileLoader FileLoader; //kort och kundklass samt kundlista och kortlista
-        private readonly TcpClient client; // den här behövs ej  bara för test 
         private readonly Server server; //Här är servern
 		public Form1()
         {
             InitializeComponent();
             FileLoader = new FileLoader();
-            client = new TcpClient();
-			server = Server(kortLoader, richTextBox1);
+			server = new Server(FileLoader, richTextBox1);
 			button1.Enabled = false;
 		}
         private void Form1_Load(object sender, EventArgs e)
         {
 		
 		}
-        private async void Button1_Click(object sender, EventArgs e)
+        private  void Button1_Click(object sender, EventArgs e)
         {
 			try
 			{
@@ -56,7 +54,7 @@ namespace Guldkortet_exam
             }
             catch (Exception error)
             {
-                MessageBox.Show(error.Message); //felmeddelande
+                MessageBox.Show("server closed"); //felmeddelande
             }
         }
     }
