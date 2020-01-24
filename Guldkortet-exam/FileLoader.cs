@@ -15,7 +15,7 @@ namespace Guldkortet_exam
         public FileLoader()
         {
             List<string> kort = new List<string>();
-            if (File.Exists("kortlista.txt"))
+            if (File.Exists("korlista.txt"))
             {
                 StreamReader reader = new StreamReader("korlista.txt", Encoding.Default, false);
 
@@ -65,6 +65,7 @@ namespace Guldkortet_exam
                     string KundNummer = vektor[0];
                     string KundNamn = vektor[1];
                     string KundStad = vektor[2];
+                    this.Kunder.Add(new Kund(KundNummer, KundNamn, KundStad));
                 }
             }
         }
